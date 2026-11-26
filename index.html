@@ -272,7 +272,7 @@ vec3 board(vec2 p,vec2 m){vec3 c=vec3(.953,.914,.894);vec2 g=p*vec2(4.,3.2);g.y+
 vec3 sc(float s,vec2 q){vec2 p=q/R.y,m=M/R.y;if(s<.5)return hero(q);if(s<1.5)return voice(p,m);if(s<2.5)return night(p,m);if(s<3.5)return lake(p,m);if(s<4.5)return terrain(p);if(s<5.5)return frost(p);if(s<6.5)return bubbles(p,m);if(s<7.5)return chart(p,m);if(s<8.5)return islands(p,m);return board(p,m);}
 void main(){vec2 q=vec2(gl_FragCoord.x,R.y-gl_FragCoord.y);float s=A;vec3 c;
   float e=Y+K*70.*(fbm(vec2(q.x/(K*210.),T*.12+A*7.))-.47)+K*12.*sin(q.x/(K*70.)+T*.6);
-  if(B>A&&q.y>e)s=B;c=sc(s,q);c+=(h1(gl_FragCoord.xy+fract(T))-.5)*.022;gl_FragColor=vec4(c,1);}
+  float d=q.y-e;if(B>A&&abs(d)<2.5*K+1.)c=mix(sc(A,q),sc(B,q),smoothstep(-1.3*K-.4,1.3*K+.4,d));else c=sc((B>A&&d>0.)?B:A,q);c+=(h1(gl_FragCoord.xy+fract(T))-.5)*.022;gl_FragColor=vec4(c,1);}
 </script>
 <script>
 (function(){
