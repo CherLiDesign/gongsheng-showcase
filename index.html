@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="description" content="交互设计课程 2026 秋季学期学生作品展：九个从日常小麻烦里长出来的 App。">
+<meta property="og:title" content="共生界面 学生作品展">
+<meta property="og:description" content="九个从日常小麻烦里长出来的 App，点开就能在手机上用。">
+<meta property="og:image" content="now/tiaodao-1.jpg">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>共生界面 学生作品展</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&family=Noto+Serif+SC:wght@600&family=Noto+Sans+SC:wght@400;500;700&family=Syne:wght@600;700&display=swap">
+<style>
+/* Layout: one vertical walk through seven living rooms. Each room has its own drawn weather; title and text stay put while screens drift past. */
+:root{
+  --mist:#E1E6EC; --ink:#191B2B; --night:#070B18; --sage:#CFE0D5; --tangerine:#F29A63; --lilac:#EBDDF0; --leaf:#0D5436; --yolk:#FFD047; --paper:#F2F5F2; --lagoon:#CDEBEA; --clay:#F3E9E4;
+  --f-display:"ZCOOL XiaoWei","Songti SC","STSong",serif; --f-body:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif; --f-label:"Syne","Noto Sans SC",sans-serif;
+  --gl:max(16px,env(safe-area-inset-left,0px)); --gr:max(16px,env(safe-area-inset-right,0px));
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--mist);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.85;-webkit-font-smoothing:antialiased;overflow-x:clip}
+a,button{color:inherit;font:inherit}
+:focus-visible{outline:2px solid currentColor;outline-offset:4px;border-radius:4px}
+#sky{position:fixed;inset:0;width:100%;height:100%;z-index:0;display:none}
+.gl #sky{display:block}
+main{position:relative;z-index:1;overflow-x:clip}
+
+/* hero */
+.hero{position:relative;min-height:max(640px,min(94svh,900px));padding-block:clamp(32px,5vw,64px) 120px;padding-left:max(clamp(16px,5vw,80px),env(safe-area-inset-left,0px));padding-right:max(clamp(16px,5vw,80px),env(safe-area-inset-right,0px));overflow:hidden}
+h1{font-family:var(--f-display);font-weight:400;writing-mode:vertical-rl;margin:0;font-size:clamp(84px,min(13vw,21svh),190px);line-height:1.04;letter-spacing:.02em;width:max-content}
+.intro{display:flex;align-items:flex-end;gap:clamp(16px,2.4vw,36px);pointer-events:none}
+.intro p{writing-mode:vertical-rl;margin:0;font-size:15px;line-height:2;max-height:24em;letter-spacing:.06em}
+.cells{position:absolute;inset:0}
+.cell{position:absolute;left:0;top:0;font-family:var(--f-display);font-size:clamp(19px,2vw,28px);line-height:1;text-decoration:none;padding:1.1em .7em;writing-mode:vertical-rl;letter-spacing:.12em;will-change:transform}
+.cell:hover{letter-spacing:.3em}.cell{transition:letter-spacing .4s}
+.c0,.c1,.c4,.c8{color:#fff}.c2,.c3,.c5,.c6,.c7{color:#1d1420}
+html:not(.gl) .cells{position:static;display:flex;flex-wrap:wrap;gap:12px;margin-top:40px}
+html:not(.gl) .cell{position:static;border-radius:999px;transform:none!important}
+html:not(.gl) .c0{background:#1F6B4F}html:not(.gl) .c1{background:#16213F}html:not(.gl) .c2{background:#F0925A}html:not(.gl) .c3{background:#CDB0EA}html:not(.gl) .c4{background:#178A50}html:not(.gl) .c5{background:#FFCB3A}html:not(.gl) .c6{background:#9ADBC0}html:not(.gl) .c7{background:#7FCFD0}html:not(.gl) .c8{background:#C9553B}
+
+/* rooms */
+.room{position:relative;min-height:120svh;padding-block:150px 170px;padding-left:max(clamp(16px,5vw,80px),env(safe-area-inset-left,0px));padding-right:max(clamp(56px,7vw,110px),env(safe-area-inset-right,0px));display:grid;gap:clamp(20px,3.4vw,64px);align-items:start;color:var(--k)}
+.v0{grid-template-columns:auto minmax(0,1fr) minmax(0,330px)}
+.v1{grid-template-columns:minmax(0,330px) minmax(0,1fr) auto}
+.v2{grid-template-columns:minmax(0,1fr) auto minmax(0,330px)}
+.v1 .name{order:3}.v1 .cascade{order:2}.v1 .copy{order:1}
+.v2 .name{order:2}.v2 .cascade{order:1}.v2 .copy{order:3}
+.xiaobu{--k:#103427;--bg:var(--sage)}.anxing{--k:#E6F5F2;--bg:var(--night)}.campus{--k:#341203;--bg:var(--tangerine)}.emotion{--k:#463450;--bg:var(--lilac)}.fridge{--k:#EDFFF4;--bg:var(--leaf)}.chanban{--k:#241B04;--bg:var(--yolk)}.xunji{--k:#12201A;--bg:var(--paper)}.tiaodao{--k:#0C3B42;--bg:var(--lagoon)}.tada{--k:#3A140C;--bg:var(--clay)}
+html:not(.gl) .room{background:var(--bg)}
+.name,.copy{position:sticky;top:max(9svh,64px)}
+.name{margin:0;font-family:var(--f-display);font-weight:400;font-size:clamp(110px,min(17vw,36svh),270px);line-height:1;display:flex;flex-direction:column}
+.name.latin{font-family:var(--f-label);font-weight:700;font-size:clamp(80px,min(9.5vw,18svh),150px);line-height:.92;align-items:center}
+.name.long{font-size:clamp(84px,min(12vw,20svh),170px)}
+.name span{display:block;will-change:transform}
+.copy{padding-top:6svh;display:flex;flex-direction:column;gap:18px;min-width:0}
+.copy p{margin:0}
+.slogan{font-family:"Noto Serif SC","Songti SC",serif;font-weight:600;font-size:clamp(22px,1.9vw,29px);line-height:1.5;word-break:keep-all}
+.text{text-wrap:pretty}
+.meta{font-size:14px;opacity:.85;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline}.meta b{margin-right:0}.who{flex-basis:100%;font-size:15px;opacity:1;letter-spacing:.08em}
+.case{display:grid;gap:10px;text-decoration:none;max-width:330px;margin-top:8px}
+.case .win{display:flex;gap:5px;padding:7px 10px;background:var(--k);border-radius:10px 10px 0 0;margin-bottom:-10px}.case .win i{width:7px;height:7px;border-radius:50%;background:var(--bg);opacity:.6}
+.case img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:top;border-radius:0 0 10px 10px;box-shadow:0 22px 40px -24px rgba(5,8,25,.55);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.case:hover img{transform:translateY(-4px) rotate(-.6deg)}
+.case b{font-weight:500;font-size:15px;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}.meta b{font-family:var(--f-label);font-weight:700;margin-right:.5em}.meta s{opacity:.65}
+.acts{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;font-size:15px}
+.acts a,.turn{background:none;border:0;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:1px}
+.acts .open{background:var(--k);color:var(--bg);text-decoration:none;padding:11px 22px;border-radius:999px;font-weight:500;transition:transform .3s}
+.acts .open:hover{transform:translateY(-3px)}
+
+/* screens fall down the page */
+.cascade{display:flex;flex-direction:column;min-width:0;perspective:1600px}
+.ph{margin:0;width:min(300px,64%);will-change:transform}
+.ph.p1{width:min(340px,74%);align-self:flex-start}
+.ph.p2{align-self:flex-end;margin-top:-210px}
+.ph.p3{align-self:flex-start;margin-left:13%;margin-top:-120px}
+.v1 .p1{align-self:flex-end}.v1 .p2{align-self:flex-start}.v1 .p3{align-self:flex-end;margin-right:10%;margin-left:0}
+.v2 .p1{align-self:center}.v2 .p2{align-self:flex-start;margin-top:-70px}.v2 .p3{align-self:flex-end;margin-left:0;margin-top:-200px}
+figcaption{font-size:13px;margin-top:10px;padding-left:14px;letter-spacing:.08em}
+.v1 .p1 figcaption,.v2 .p1 figcaption{text-align:right;padding-right:14px}
+.tilt{transform-style:preserve-3d;will-change:transform}
+.phone{background:#0B0C12;padding:7px;border-radius:40px;box-shadow:0 40px 70px -28px rgba(5,8,25,.55),0 4px 14px rgba(5,8,25,.14)}
+.phone img{display:block;width:100%;height:auto;aspect-ratio:390/844;object-fit:cover;object-position:top;border-radius:33px;background:#ddd}
+.flip{position:relative;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(.3,.9,.25,1)}
+.flip.on{transform:rotateY(180deg)}
+.flip .phone{backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.flip .back{position:absolute;inset:0;transform:rotateY(180deg)}
+
+/* side index */
+.side{position:fixed;z-index:5;right:0;top:50%;transform:translateY(-50%);padding-right:max(18px,env(safe-area-inset-right,0px));display:flex;flex-direction:column;gap:6px;color:#fff;mix-blend-mode:difference}
+.side a{display:flex;align-items:center;justify-content:flex-end;gap:10px;min-height:24px;min-width:24px;text-decoration:none;font-size:13px}
+.side a::after{content:"";width:9px;height:9px;border-radius:50%;border:1.5px solid #fff;transition:transform .4s,background .4s}
+.side a.on::after{background:#fff;transform:scale(1.35)}
+.side span{opacity:0;transform:translateX(6px);transition:.3s}
+.side a:hover span,.side a:focus-visible span,.side a.on span{opacity:1;transform:none}
+.end{position:absolute;left:0;right:0;bottom:0;padding-block:0 28px;padding-left:max(clamp(16px,5vw,80px),env(safe-area-inset-left,0px));padding-right:max(clamp(56px,7vw,110px),env(safe-area-inset-right,0px));font-size:13px;color:#12201A;display:flex;flex-wrap:wrap;gap:4px 24px;justify-content:space-between;z-index:2}
+
+@media (max-width:900px){
+  .room,.v1,.v2{grid-template-columns:auto minmax(0,1fr);padding-block:110px 140px;padding-right:max(36px,env(safe-area-inset-right,0px));gap:28px 18px}
+  .room .name{order:1;position:static;font-size:clamp(82px,23vw,170px)}
+  .room .name.long{font-size:clamp(60px,16vw,120px)}
+  .room .copy{order:2;position:static;padding-top:6px;gap:14px}
+  .room .cascade{order:3;grid-column:1/-1}
+  .side span{display:none}.side{padding-right:max(8px,env(safe-area-inset-right,0px))}
+  .hero{min-height:860px}
+  .intro p{font-size:14px;max-height:19em}
+  .p2{margin-top:-110px}.room .p3{margin-top:-70px}
+  .phone{border-radius:30px;padding:5px}.phone img{border-radius:25px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+</style>
+
+</head>
+<body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<main>
+<section class="hero" data-scene="0">
+  <div class="intro">
+    <h1 aria-label="共生界面">共生<br>界面</h1>
+    <p>学生作品展，二〇二六年秋。<br>九个从日常小麻烦里长出来的 App，<br>每一件都还在继续生长。</p>
+  </div>
+  <nav class="cells" aria-label="作品"><a class="cell c0" href="#xiaobu">小步</a><a class="cell c1" href="#anxing">安星</a><a class="cell c2" href="#campus">闲鹅</a><a class="cell c3" href="#emotion">情绪靠岸</a><a class="cell c4" href="#fridge">鲜知</a><a class="cell c5" href="#chanban">馋伴</a><a class="cell c6" href="#xunji">寻迹</a><a class="cell c7" href="#tiaodao">跳岛</a><a class="cell c8" href="#tada">TADA</a></nav>
+</section>
+
+<section class="room v0 xiaobu" id="xiaobu" data-scene="1">
+  <h2 class="name" aria-label="小步"><span data-c="0">小</span><span data-c="1">步</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/xiaobu-1.jpg" width="640" height="1385" alt="小步 · 今日待办" loading="eager"></div><div class="phone back" aria-hidden="true"><img src="shots/xiaobu.jpg" alt="" loading="lazy"></div></div></div><figcaption>今日待办</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/xiaobu-2.jpg" width="640" height="1385" alt="小步 · 日历" loading="eager"></div></div><figcaption>日历</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/xiaobu-3.jpg" width="640" height="1385" alt="小步 · 小步习惯" loading="eager"></div></div><figcaption>小步习惯</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">说出来，<wbr>就有人<wbr>替你记住</p>
+    <p class="text">一个用说话来记事的提醒 App。说一句“明天九点交作业”，时间会自己被认出来。过期的事可以推迟、批量处理；日历把一个月摊开来看，小步习惯从喝水、走两千步这样的小事开始。</p>
+    <p class="meta"><b>Xiaobu</b> 终焉时刻版<span class="who">向新尧 · 黄子林</span></p>
+    <p class="acts"><a class="open" href="https://x1038604972-web.github.io/xiaobu-reminder/" target="_blank" rel="noopener">打开小步 ↗</a><button type="button" class="turn" id="turn-xiaobu" aria-pressed="false">翻看上一版</button></p>
+    <a class="case" href="https://sleepzzz-h.github.io/xiaobu-pitch/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/xiaobu.jpg" width="720" height="450" alt="小步产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v1 anxing" id="anxing" data-scene="2">
+  <h2 class="name" aria-label="安星"><span data-c="0">安</span><span data-c="1">星</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/anxing-1.jpg" width="640" height="1385" alt="安星 · 夜行导航" loading="lazy"></div><div class="phone back" aria-hidden="true"><img src="shots/nightguard.jpg" alt="" loading="lazy"></div></div></div><figcaption>夜行导航</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/anxing-2.jpg" width="640" height="1385" alt="安星 · 伴行电台" loading="lazy"></div></div><figcaption>伴行电台</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/anxing-3.jpg" width="640" height="1385" alt="安星 · 分级求救" loading="lazy"></div></div><figcaption>分级求救</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">夜路很长，<wbr>让声音<wbr>陪你走</p>
+    <p class="text">给夜里独自走路的人。地图换成了真实定位和真实道路。求救分成两级：有点不安，先把位置共享给联系人；确认危险，再启动 SOS。伴行页放夜行歌单和听书，社区里可以约人同路。</p>
+    <p class="meta"><b>Anxing</b> <s>夜安</s> 3.0<span class="who">袁上恒</span></p>
+    <p class="acts"><a class="open" href="https://tuotuo-yyds.github.io/anxing-app/" target="_blank" rel="noopener">打开安星 ↗</a><button type="button" class="turn" id="turn-anxing" aria-pressed="false">翻看上一版</button></p>
+    <a class="case" href="https://wanan0112.github.io/anxing-pitch/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/anxing.jpg" width="720" height="450" alt="安星产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v2 campus" id="campus" data-scene="3">
+  <h2 class="name" aria-label="闲鹅"><span data-c="0">闲</span><span data-c="1">鹅</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/campus-1.jpg" width="640" height="1385" alt="闲鹅 · 逛市集" loading="lazy"></div><div class="phone back" aria-hidden="true"><img src="shots/campus.jpg" alt="" loading="lazy"></div></div></div><figcaption>逛市集</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/campus-2.jpg" width="640" height="1385" alt="闲鹅 · 商品详情" loading="lazy"></div></div><figcaption>商品详情</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/campus-3.jpg" width="640" height="1385" alt="闲鹅 · 我的" loading="lazy"></div></div><figcaption>我的</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">让闲置<wbr>在校园里<wbr>流动起来</p>
+    <p class="text">只在校园里流通的二手市集，有一只闲鹅全程陪着。用 AI 拍照识别，30 秒就能挂出一件闲置。教材、数码、周边分好类，商品页直接写明成色、能不能小刀、怎么面交，看中了就联系卖家或者下单。</p>
+    <p class="meta"><b>Campus Trade</b> <s>校园闲置</s> v5.47<span class="who">丁雯静</span></p>
+    <p class="acts"><a class="open" href="https://quanbo1.github.io/campus-trade-ui-app/?v=2" target="_blank" rel="noopener">打开闲鹅 ↗</a><button type="button" class="turn" id="turn-campus" aria-pressed="false">翻看上一版</button></p>
+    <a class="case" href="https://d2581565372-tech.github.io/campus-secondhand-research/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/campus.jpg" width="720" height="450" alt="闲鹅产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v0 emotion" id="emotion" data-scene="4">
+  <h2 class="name long" aria-label="情绪靠岸"><span data-c="0">情</span><span data-c="1">绪</span><span data-c="2">靠</span><span data-c="3">岸</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/emotion-1.jpg" width="640" height="1385" alt="情绪靠岸 · 情绪地形" loading="lazy"></div><div class="phone back" aria-hidden="true"><img src="shots/emotion.jpg" alt="" loading="lazy"></div></div></div><figcaption>情绪地形</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/emotion-2.jpg" width="640" height="1385" alt="情绪靠岸 · 时光机" loading="lazy"></div></div><figcaption>时光机</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/emotion-3.jpg" width="640" height="1385" alt="情绪靠岸 · 漂流" loading="lazy"></div></div><figcaption>漂流</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">让写下的话，<wbr>慢慢漂回<wbr>你身边</p>
+    <p class="text">一个安静的情绪记录空间。触碰彩色地形，选一种此刻的颜色，再写下一句话。新版把公开的树洞收了起来，只留下自己的记录；时光机可以给过去或未来的自己寄一封信，信只存在这台设备上。</p>
+    <p class="meta"><b>Emotion Planet</b> V3.1</p>
+    <p class="acts"><a class="open" href="https://jimodu.github.io/emotion-planet-v3/" target="_blank" rel="noopener">打开情绪靠岸 ↗</a><button type="button" class="turn" id="turn-emotion" aria-pressed="false">翻看上一版</button></p>
+    
+  </div>
+</section>
+<section class="room v1 fridge" id="fridge" data-scene="5">
+  <h2 class="name" aria-label="鲜知"><span data-c="0">鲜</span><span data-c="1">知</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/fridge-1.jpg" width="640" height="1385" alt="鲜知 · 临期提醒" loading="lazy"></div><div class="phone back" aria-hidden="true"><img src="shots/fridge.jpg" alt="" loading="lazy"></div></div></div><figcaption>临期提醒</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/fridge-2.jpg" width="640" height="1385" alt="鲜知 · 今日食谱" loading="lazy"></div></div><figcaption>今日食谱</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/fridge-3.jpg" width="640" height="1385" alt="鲜知 · 添加食材" loading="lazy"></div></div><figcaption>添加食材</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">早上好，<wbr>今天想吃<wbr>些什么</p>
+    <p class="text">把冰箱搬到手机上。打开先看快过期的食材，再看用它们能做什么菜。添加食材可以手动填、拍照，或者说一句话。这一版还多了一块冰箱门上的显示屏。</p>
+    <p class="meta"><b>FreshSense</b> 3.0</p>
+    <p class="acts"><a class="open" href="https://tartalr818339.github.io/fridge3.0/" target="_blank" rel="noopener">打开鲜知 ↗</a><button type="button" class="turn" id="turn-fridge" aria-pressed="false">翻看上一版</button><a href="https://tartalr818339.github.io/fridge-screen/" target="_blank" rel="noopener">冰箱屏 ↗</a></p>
+    <a class="case" href="https://zxiaoxiew-source.github.io/fridge/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/fridge.jpg" width="720" height="450" alt="鲜知产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v2 chanban" id="chanban" data-scene="6">
+  <h2 class="name" aria-label="馋伴"><span data-c="0">馋</span><span data-c="1">伴</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/chanban-1.jpg" width="640" height="1385" alt="馋伴 · 今天吃什么" loading="lazy"></div><div class="phone back" aria-hidden="true"><img src="shots/chanban.jpg" alt="" loading="lazy"></div></div></div><figcaption>今天吃什么</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/chanban-2.jpg" width="640" height="1385" alt="馋伴 · 趋势" loading="lazy"></div></div><figcaption>趋势</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/chanban-3.jpg" width="640" height="1385" alt="馋伴 · 记录中心" loading="lazy"></div></div><figcaption>记录中心</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">和嘴馋<wbr>做朋友</p>
+    <p class="text">解决每天最难的问题：吃什么。按口味、预算和时间，让小馋替你挑一餐，或者自己慢慢选。拍一张、记一餐，就能攒一颗星；趋势页替你总结这一周。</p>
+    <p class="meta"><b>MOGU</b> <span class="who">廖静怡</span></p>
+    <p class="acts"><a class="open" href="https://chanban-app.pages.dev/#/record" target="_blank" rel="noopener">打开馋伴 ↗</a><button type="button" class="turn" id="turn-chanban" aria-pressed="false">翻看上一版</button></p>
+    <a class="case" href="https://3435025144-del.github.io/mogu-case-study/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/chanban.jpg" width="720" height="450" alt="馋伴产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v0 xunji" id="xunji" data-scene="7">
+  <h2 class="name" aria-label="寻迹"><span data-c="0">寻</span><span data-c="1">迹</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="flip"><div class="phone front"><img src="now/xunji-1.jpg" width="640" height="1385" alt="寻迹 · 物品清单" loading="lazy"></div><div class="phone back" aria-hidden="true"><img src="shots/organizer.jpg" alt="" loading="lazy"></div></div></div><figcaption>物品清单</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/xunji-2.jpg" width="640" height="1385" alt="寻迹 · 分类" loading="lazy"></div></div><figcaption>分类</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/xunji-3.jpg" width="640" height="1385" alt="寻迹 · 设备联动" loading="lazy"></div></div><figcaption>设备联动</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">找不到、<wbr>记不住，<wbr>才是<wbr>真正的问题</p>
+    <p class="text">记下每样东西放在哪里、还剩多少、什么时候过期。快到期的会排到最前面。分类页一眼看清全屋库存，联动页可以绑定定位设备，在地图上找回随身的物品。</p>
+    <p class="meta"><b>Xunji</b> <s>收纳小管家</s> v2.67<span class="who">张婉清</span></p>
+    <p class="acts"><a class="open" href="https://ananpaofu.github.io/new-shouna-app/" target="_blank" rel="noopener">打开寻迹 ↗</a><button type="button" class="turn" id="turn-xunji" aria-pressed="false">翻看上一版</button></p>
+    <a class="case" href="https://ananpaofu.github.io/xunji-case/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/xunji.jpg" width="720" height="450" alt="寻迹产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v1 tiaodao" id="tiaodao" data-scene="8">
+  <h2 class="name" aria-label="跳岛"><span data-c="0">跳</span><span data-c="1">岛</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="phone"><img src="now/tiaodao-1.jpg" width="640" height="1385" alt="跳岛 · 为你推荐" loading="lazy"></div></div><figcaption>为你推荐</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/tiaodao-2.jpg" width="640" height="1385" alt="跳岛 · 附近的岛" loading="lazy"></div></div><figcaption>附近的岛</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/tiaodao-3.jpg" width="640" height="1385" alt="跳岛 · 我的岛屿画像" loading="lazy"></div></div><figcaption>我的岛屿画像</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">与其想几个月，<wbr>不如先<wbr>跳一座岛</p>
+    <p class="text">给站在升学和就业岔路口、对方向感到迷茫的年轻人。附近的摄影师、咖啡师、花艺师都是一座“岛”，花半天、几十块钱上岛体验一次真实的工作。跳岛日志只记观察，不下定论；“我的岛屿画像”把试过的方向慢慢拼出来。</p>
+    <p class="meta"><b>Island Hop</b> App 2.1<span class="who">兰玉晗</span></p>
+    <p class="acts"><a class="open" href="https://hexinyi1128.github.io/app2.1/" target="_blank" rel="noopener">打开跳岛 ↗</a></p>
+    <a class="case" href="https://lanyuhan1109.github.io/tiaodao/" target="_blank" rel="noopener"><span class="win"><i></i><i></i><i></i></span><img src="case/tiaodao.jpg" width="720" height="450" alt="跳岛产品展示页首屏" loading="lazy"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<section class="room v2 tada" id="tada" data-scene="9">
+  <h2 class="name latin" aria-label="TADA"><span data-c="0">T</span><span data-c="1">A</span><span data-c="2">D</span><span data-c="3">A</span></h2>
+  <div class="cascade"><figure class="ph p1" data-d="0.1"><div class="tilt"><div class="phone"><img src="now/tada-1.jpg" width="640" height="1385" alt="TADA · 收藏库" loading="lazy"></div></div><figcaption>收藏库</figcaption></figure><figure class="ph p2" data-d="-0.12"><div class="tilt"><div class="phone"><img src="now/tada-2.jpg" width="640" height="1385" alt="TADA · 按来源筛选" loading="lazy"></div></div><figcaption>按来源筛选</figcaption></figure><figure class="ph p3" data-d="0.2"><div class="tilt"><div class="phone"><img src="now/tada-3.jpg" width="640" height="1385" alt="TADA · 排序" loading="lazy"></div></div><figcaption>排序</figcaption></figure></div>
+  <div class="copy">
+    <p class="slogan">让收藏过的灵感，<wbr>不再<wbr>难以找回</p>
+    <p class="text">给设计师的 AI 视觉素材收藏与检索工具。从小红书、Pinterest、站酷、花瓣收来的图放进同一个收藏库，按来源和时间筛选；想不起放在哪时，用你记得的样子去搜。</p>
+    <p class="meta"><b>图然想起</b> v4<span class="who">潘奕好</span></p>
+    <p class="acts"><a class="open" href="https://shoucang.165-22-254-236.sslip.io/v4/" target="_blank" rel="noopener">打开TADA ↗</a></p>
+    <a class="case" href="https://richardsonjeffrey989.github.io/tada-portfolio-ppt/" target="_blank" rel="noopener"><b>看产品展示页 ↗</b></a>
+  </div>
+</section>
+<footer class="end"><span>所有作品均由学生独立设计与开发，建议用手机打开体验。</span><span>指导教师 Cher</span></footer>
+</main>
+<nav class="side" aria-label="作品索引"><a href="#xiaobu"><span>小步</span></a><a href="#anxing"><span>安星</span></a><a href="#campus"><span>闲鹅</span></a><a href="#emotion"><span>情绪靠岸</span></a><a href="#fridge"><span>鲜知</span></a><a href="#chanban"><span>馋伴</span></a><a href="#xunji"><span>寻迹</span></a><a href="#tiaodao"><span>跳岛</span></a><a href="#tada"><span>TADA</span></a></nav>
+
+<script id="fs" type="x-shader/x-fragment">
+precision highp float;
+uniform vec2 R,M;uniform float T,A,B,Y,K;uniform vec3 C[9];
+float h1(vec2 p){p=fract(p*vec2(123.34,456.21));p+=dot(p,p+45.32);return fract(p.x*p.y);}
+vec2 h2(vec2 p){float n=h1(p);return vec2(n,h1(p+n+3.7));}
+float ns(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);return mix(mix(h1(i),h1(i+vec2(1,0)),f.x),mix(h1(i+vec2(0,1)),h1(i+vec2(1,1)),f.x),f.y);}
+float fbm(vec2 p){float a=.5,s=0.;for(int i=0;i<4;i++){s+=a*ns(p);p=p*2.03+7.1;a*=.5;}return s;}
+vec3 cc(int i){if(i==0)return vec3(.12,.42,.31);if(i==1)return vec3(.08,.12,.27);if(i==2)return vec3(.95,.57,.34);if(i==3)return vec3(.80,.68,.93);if(i==4)return vec3(.08,.56,.33);if(i==5)return vec3(1.,.79,.22);if(i==6)return vec3(.60,.86,.76);if(i==7)return vec3(.50,.81,.82);return vec3(.79,.33,.23);}
+vec3 hero(vec2 q){float f=0.,w=0.;vec3 c=vec3(0);
+  vec2 wq=q+K*10.*vec2(ns(q/(K*90.)+T*.15)-.5,ns(q/(K*90.)+9.-T*.15)-.5)*2.;
+  for(int i=0;i<9;i++){vec2 d=wq-C[i].xy;float g=C[i].z*C[i].z/(dot(d,d)+1.);f+=g;float k=pow(g,1.7);w+=k;c+=k*cc(i);}
+  c/=w;float m=smoothstep(.97,1.03,f);
+  float rim=smoothstep(1.75,1.,f);c=mix(c,c*1.1+.05,rim);
+  vec3 bg=vec3(.882,.902,.925)-.05*smoothstep(.35,1.,f);
+  return mix(bg,c,m);}
+vec3 voice(vec2 p,vec2 m){vec2 c=mix(vec2(.62*R.x/R.y,.5),m,.25);vec2 d=p-c;float r=length(d),a=atan(d.y,d.x);
+  float e=r+.035*sin(a*5.+T*.9)*sin(T*.7)+.10*(fbm(d*3.+T*.12)-.5);
+  float l=smoothstep(.80,1.,sin(e*58.-T*1.6));return mix(vec3(.81,.878,.835),vec3(.12,.42,.31),l*.30*smoothstep(1.25,.05,r));}
+vec3 night(vec2 p,vec2 m){vec3 c=mix(vec3(.027,.043,.094),vec3(.06,.09,.20),fbm(p*1.6+T*.015)*p.y);
+  for(int k=0;k<2;k++){vec2 g=p*(k==0?16.:30.);vec2 i=floor(g),f=fract(g)-.5;vec2 o=(h2(i)-.5)*.7;float s=step(.72,h1(i+4.));float tw=.5+.5*sin(T*(1.+3.*h1(i))+h1(i)*40.);c+=s*tw*vec3(.8,.95,1.)*smoothstep(.075,0.,length(f-o));}
+  vec2 o=vec2(.5*R.x/R.y,1.15);vec2 v=p-o,u=normalize(m-o);float al=dot(normalize(v),u);float b=smoothstep(.955,1.,al)*smoothstep(1.5,.1,length(v));
+  return c+b*vec3(.16,.36,.33);}
+vec3 lake(vec2 p,vec2 m){float s=0.;for(int i=0;i<4;i++){float fi=float(i);vec2 c=i==0?m:vec2((.2+.5*fract(fi*.37))*R.x/R.y,fract(fi*.61+.1));float r=length((p-c)*vec2(1.,1.9));s+=sin(r*44.-T*1.8+fi*2.)*exp(-r*2.6);}
+  float w=fbm(p*vec2(2.,6.)+vec2(T*.06,T*.1));vec3 c=mix(vec3(.957,.63,.41),vec3(.94,.55,.32),w);return c+.055*s;}
+vec3 terrain(vec2 p){vec3 c=vec3(.955,.91,.94);for(int i=0;i<8;i++){float f=float(i);float h=.10+f*.125+.055*sin(p.x*(1.5+.25*f)+T*.22+f*1.9)+.07*(ns(vec2(p.x*1.3+f*5.,T*.08+f))-.5);
+  float k=smoothstep(h-.004,h+.004,p.y);vec3 q=.80+.14*cos(6.2832*(f*.12+vec3(.02,.36,.66)+.02*sin(T*.1)));q=mix(q,vec3(.94,.90,.95),.42);c=mix(c,q*(1.-.05*smoothstep(h+.06,h,p.y)),k);}return c;}
+vec3 frost(vec2 p){vec3 c=mix(vec3(.04,.30,.19),vec3(.065,.37,.245),fbm(p*2.));
+  for(int k=0;k<3;k++){float z=k==0?5.:(k==1?10.:19.);vec2 g=p*z;float col=floor(g.x);g.y-=T*(.05+.22*step(.75,h1(vec2(col,2.)))*(k==0?1.:.5));vec2 i=floor(g),f=fract(g)-.5;
+   if(h1(i+float(k)*9.)>.48){vec2 o=(h2(i)-.5)*.45;float r=.10+.22*h1(i+1.);vec2 d=(f-o)*vec2(1.,.88);float l=length(d);float in_=smoothstep(r,r-.03,l);
+    c=mix(c,c*1.16+vec3(.02,.05,.035),in_*.8);c+=.16*smoothstep(r*.28,0.,length(d+vec2(r*.35,r*.4)))*in_;c-=.05*smoothstep(r*.5,r,l)*in_;}}
+  return c;}
+vec3 bubbles(vec2 p,vec2 m){vec2 g=p*15.;g.y+=T*.35;vec2 i=floor(g),f=fract(g)-.5;vec2 w=(i+.5);w.y-=T*.35;w/=15.;float a=.5+.5*sin(w.x*5.+w.y*4.+T*.8);a=mix(a,1.,smoothstep(.35,0.,length(w-m)));
+  float r=.05+.30*a;float d=smoothstep(r,r-.04,length(f));return mix(vec3(1.,.815,.28),vec3(1.,.745,.13),d*.85);}
+vec3 chart(vec2 p,vec2 m){float n=fbm(p*1.5+vec2(T*.02,-T*.015))+.12*exp(-5.*length(p-m));float ex=fbm((p+vec2(.004,0.))*1.5+vec2(T*.02,-T*.015))-fbm(p*1.5+vec2(T*.02,-T*.015)),ey=fbm((p+vec2(0.,.004))*1.5+vec2(T*.02,-T*.015))-fbm(p*1.5+vec2(T*.02,-T*.015));float gr=length(vec2(ex,ey))/.004*15.;float v=fract(n*15.);float l=smoothstep(.0030,.0008,min(v,1.-v)/max(gr,1.5));vec3 c=mix(vec3(.949,.961,.949),vec3(.12,.62,.36),l*.30);
+  vec2 q=vec2((.5+.32*sin(T*.13))*R.x/R.y,.5+.34*sin(T*.21+1.));float r=length(p-q);c=mix(c,vec3(.12,.62,.36),smoothstep(.012,.009,r));float u=fract(T*.35);c=mix(c,vec3(.12,.62,.36),.6*(1.-u)*smoothstep(.004,.0,abs(r-u*.16)));return c;}
+vec3 islands(vec2 p,vec2 m){vec2 w=p+vec2(T*.012,0.);float n=fbm(w*2.2)+.10*exp(-9.*dot(p-m,p-m));vec3 sea=mix(vec3(.80,.92,.92),vec3(.74,.89,.90),fbm(w*5.+T*.05));
+  float sh=smoothstep(.60,.605,n),ring=0.;for(int i=1;i<4;i++){float lv=.60-float(i)*.035;ring+=smoothstep(.006,.0,abs(n-lv-.004*sin(T*1.2+float(i))))*(1.-float(i)*.25);}
+  vec3 c=sea+ring*.07;c=mix(c,vec3(.97,.95,.89),sh);c=mix(c,vec3(.86,.93,.85),smoothstep(.70,.72,n));return c;}
+vec3 board(vec2 p,vec2 m){vec3 c=vec3(.953,.914,.894);vec2 g=p*vec2(4.,3.2);g.y+=T*.03;vec2 i=floor(g),f=fract(g);
+  float o=h1(i+1.);if(o>.35){vec2 sz=vec2(.30+.32*h1(i+2.),.34+.36*h1(i+3.));vec2 ce=vec2(.5)+(h2(i+4.)-.5)*.25+.02*vec2(sin(T*.4+o*9.),cos(T*.35+o*7.));
+   vec2 d=abs(f-ce)-sz*.5;float r=.04;float s=length(max(d+r,0.))+min(max(d.x,d.y),0.)-r;float a=smoothstep(.004,-.004,s);
+   vec3 tc=.5+.5*cos(6.2832*(h1(i+5.)+vec3(.0,.25,.55)));tc=mix(c,tc,.13+.30*step(.94,o));c=mix(c,c*.93,smoothstep(.03,-.01,s-.012)*.5);c=mix(c,tc,a);}
+  return c;}
+vec3 sc(float s,vec2 q){vec2 p=q/R.y,m=M/R.y;if(s<.5)return hero(q);if(s<1.5)return voice(p,m);if(s<2.5)return night(p,m);if(s<3.5)return lake(p,m);if(s<4.5)return terrain(p);if(s<5.5)return frost(p);if(s<6.5)return bubbles(p,m);if(s<7.5)return chart(p,m);if(s<8.5)return islands(p,m);return board(p,m);}
+void main(){vec2 q=vec2(gl_FragCoord.x,R.y-gl_FragCoord.y);float s=A;vec3 c;
+  float e=Y+K*70.*(fbm(vec2(q.x/(K*210.),T*.12+A*7.))-.47)+K*12.*sin(q.x/(K*70.)+T*.6);
+  if(B>A&&q.y>e)s=B;c=sc(s,q);c+=(h1(gl_FragCoord.xy+fract(T))-.5)*.022;gl_FragColor=vec4(c,1);}
+</script>
+<script>
+(function(){
+var D=document,H=D.documentElement,cv=D.getElementById('sky'),still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var secs=[].slice.call(D.querySelectorAll('[data-scene]')),cells=[].slice.call(D.querySelectorAll('.cell')),side=[].slice.call(D.querySelectorAll('.side a')),hero=secs[0];
+var figs=[].slice.call(D.querySelectorAll('.ph')),chars=[].slice.call(D.querySelectorAll('.name span'));
+var gl=null,U={},W=0,Hh=0,k=1,mx=.6,my=.5,sx=.6,sy=.5,t=8,last=0,dirty=true;
+D.querySelectorAll('.turn').forEach(function(b){b.onclick=function(){var f=b.closest('.room').querySelector('.flip'),on=f.classList.toggle('on');b.setAttribute('aria-pressed',on);b.textContent=on?'翻回现在':'翻看上一版';};});
+function init(){
+  gl=cv.getContext('webgl',{antialias:false,alpha:false,powerPreference:'low-power'});if(!gl)return;
+  function sh(ty,src){var s=gl.createShader(ty);gl.shaderSource(s,src);gl.compileShader(s);if(!gl.getShaderParameter(s,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(s));return null}return s}
+  var v=sh(gl.VERTEX_SHADER,'attribute vec2 a;void main(){gl_Position=vec4(a,0,1);}'),f=sh(gl.FRAGMENT_SHADER,D.getElementById('fs').textContent);
+  if(!v||!f){gl=null;return}
+  var p=gl.createProgram();gl.attachShader(p,v);gl.attachShader(p,f);gl.linkProgram(p);if(!gl.getProgramParameter(p,gl.LINK_STATUS)){gl=null;return}
+  gl.useProgram(p);gl.bindBuffer(gl.ARRAY_BUFFER,gl.createBuffer());gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);gl.bindAttribLocation(p,0,'a');var al=gl.getAttribLocation(p,'a');gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+  ['R','M','T','A','B','Y','K','C'].forEach(function(n){U[n]=gl.getUniformLocation(p,n==='C'?'C[0]':n)});
+  H.classList.add('gl');
+}
+function size(){W=innerWidth;Hh=innerHeight;k=Math.min(1,900/Math.max(W,Hh))*Math.min(devicePixelRatio||1,1.5);k=Math.max(.55,Math.min(k,1.25));cv.width=Math.round(W*k);cv.height=Math.round(Hh*k);if(gl)gl.viewport(0,0,cv.width,cv.height);dirty=true}
+var buf=new Float32Array(27),SZ=[1,.95,1.06,1.14,.92,1,.92,.96,.9],N=9;
+function layout(){ // 九个细胞：互相靠近、融合、再分开
+  var r=hero.getBoundingClientRect(),hw=r.width,hh=r.height,m=hw<900,cx=m?hw*.52:hw*.70,cy=m?hh*.72:hh*.5,rx=m?hw*.32:hw*.21,ry=m?hh*.2:hh*.33,base=m?Math.min(hw*.125,62):Math.min(hw*.062,hh*.115);
+  for(var i=0;i<N;i++){var a=i/N*6.2832+t*.07+.25*Math.sin(t*.19+i*2),q=.83+.2*Math.sin(t*.31+i*1.7);if(i===3)q*=.12;if(i===8)q*=.45;
+    var x=cx+Math.cos(a)*rx*q,y=cy+Math.sin(a)*ry*q,px=sx*W-x,py=sy*Hh-r.top-y,d=Math.sqrt(px*px+py*py)+1,g=Math.max(0,1-d/(hw*.28))*.22;x+=px*g;y+=py*g;
+    cells[i].style.transform='translate('+x.toFixed(1)+'px,'+y.toFixed(1)+'px) translate(-50%,-50%)';
+    buf[i*3]=x*k;buf[i*3+1]=(y+r.top)*k;buf[i*3+2]=base*SZ[i]*k;}
+}
+function frame(now){
+  var dt=Math.min(.05,(now-last)/1000||0);last=now;if(!still)t+=dt;
+  sx+=(mx-sx)*.06;sy+=(my-sy)*.06;
+  if(!still||dirty){
+    if(gl&&hero.getBoundingClientRect().bottom>0)layout();
+    var A=0,B=0,Y=1e5,cur=0;
+    for(var i=0;i<secs.length;i++){var r=secs[i].getBoundingClientRect();if(r.top<=0)A=i;if(r.top<Hh*.5)cur=i;if(r.top>0&&r.top<Hh+120&&Y>9e4){B=i;Y=r.top}}
+    if(B<=A){B=A;Y=1e5}
+    for(i=0;i<side.length;i++)side[i].classList.toggle('on',i===cur-1);
+    if(!still){
+      figs.forEach(function(f){var r=f.parentNode.getBoundingClientRect();if(r.bottom<-300||r.top>Hh+300)return;var o=f._o||(f._o={});
+        var c=r.top+f.offsetTop-f.parentNode.offsetTop+f.offsetHeight/2-Hh/2,d=+f.dataset.d;
+        f.style.transform='translate3d(0,'+(c*d).toFixed(1)+'px,0)';
+        f.firstChild.style.transform='rotateZ('+(c/Hh*d*14).toFixed(2)+'deg) rotateY('+((sx-.5)*16*(1+Math.abs(d))).toFixed(2)+'deg) rotateX('+((.5-sy)*9+Math.max(-9,Math.min(9,c/Hh*8))).toFixed(2)+'deg)';});
+      chars.forEach(function(s){var r=s.parentNode.getBoundingClientRect();if(r.bottom<-200||r.top>Hh+200)return;var n=+s.dataset.c;s.style.transform='translate('+(Math.sin(t*.6+n*1.9)*7+(n%2?1:-1)*(sx-.5)*-18).toFixed(1)+'px,'+(Math.cos(t*.5+n*1.3)*5).toFixed(1)+'px)';});
+    }
+    if(gl){gl.uniform2f(U.R,cv.width,cv.height);gl.uniform2f(U.M,sx*cv.width,sy*cv.height);gl.uniform1f(U.T,t);gl.uniform1f(U.A,A);gl.uniform1f(U.B,B);gl.uniform1f(U.Y,Y*k);gl.uniform1f(U.K,k);gl.uniform3fv(U.C,buf);gl.drawArrays(gl.TRIANGLES,0,3)}
+    dirty=false;
+  }
+  if(!D.hidden)requestAnimationFrame(frame);
+}
+init();size();
+addEventListener('resize',size);addEventListener('scroll',function(){dirty=true},{passive:true});
+addEventListener('pointermove',function(e){mx=e.clientX/W;my=e.clientY/Hh},{passive:true});
+D.addEventListener('visibilitychange',function(){if(!D.hidden){last=performance.now();requestAnimationFrame(frame)}});
+requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
